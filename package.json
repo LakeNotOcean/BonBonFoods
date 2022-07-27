@@ -1,0 +1,23 @@
+{
+  "name": "bonbonfoods",
+  "devDependencies": {
+    "@sap/ux-ui5-tooling": "1",
+    "@ui5/cli": "^2.11.1",
+    "@ui5/fs": "^2.0.6",
+    "@ui5/logger": "^2.0.1",
+    "rimraf": "3.0.2"
+  },
+  "ui5": {
+    "dependencies": [
+      "@sap/ux-ui5-tooling"
+    ]
+  },
+  "description": "sapui5 test project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nevskiy Vladislav",
+  "license": "ISC"
+}

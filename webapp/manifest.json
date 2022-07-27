@@ -1,0 +1,68 @@
+{
+    "_version": "1.12.0",
+    "sap.app": {
+      "id": "sap.ui.food",
+      "type": "application",
+      "i18n": "i18n/i18n.properties",
+      "title": "{{appTitle}}",
+      "description": "{{appDescription}}",
+      "applicationVersion": {
+        "version": "1.0.0"
+      },
+      "dataSources": {  
+        "foodRemote": {
+          "uri": "/sap/opu/odata/sap/ZSTUDENT02_DINING_SRV/",
+          "type": "OData",
+          "settings": {
+            "odataVersion": "2.0"
+          }
+        }
+      }
+    },
+    "sap.ui": {
+      "technology": "UI5",
+      "deviceTypes": {
+          "desktop": true,
+          "tablet": true,
+          "phone": true
+      },
+      "fullWidth": true
+    },
+    "sap.ui5": {
+      "rootView": {
+          "viewName": "sap.ui.food.view.App",
+          "type": "XML",
+          "id": "app"
+      },
+      "dependencies": {
+        "minUI5Version": "1.93",
+        "libs": {
+          "sap.ui.core": {},
+          "sap.m": {}
+        }
+      },
+      "models": {
+        "i18n": {
+          "type": "sap.ui.model.resource.ResourceModel",
+          "settings": {
+            "bundleName": "sap.ui.demo.walkthrough.i18n.i18n",
+            "supportedLocales": [""],
+            "fallbackLocale": ""
+          }
+        },
+        "food": {
+          "dataSource": "foodRemote",
+          "settings": {
+              "useBatch":false
+          }
+        }
+      },
+      "resources": {
+        "css": [
+        {
+          "uri": "css/style.css"
+        }
+        ]
+      }
+    }
+  }

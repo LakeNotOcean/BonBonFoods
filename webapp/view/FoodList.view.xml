@@ -1,0 +1,10 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" controllerName="sap.ui.demo.walkthrough.controller.FoodList">
+
+    <List headerText="{i18n>foodListTitle}" class="sapUiResponsiveMargin" width="auto" 
+    items="{path:'food>/FoodSet' , parameters:{expand : 'FoodToTags'}}">
+        <items>
+            <ObjectListItem title="{food>Descr}">
+            </ObjectListItem>
+        </items>
+    </List>
+</mvc:View>
