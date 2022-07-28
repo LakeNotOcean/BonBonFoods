@@ -1,0 +1,70 @@
+<mvc:View xmlns:uxap="sap.uxap"
+          xmlns:layout="sap.ui.layout"
+          xmlns="sap.m"
+          xmlns:l="sap.ui.layout"
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns:f="sap.f"
+          xmlns:grid="sap.ui.layout.cssgrid"
+          controllerName="sap.ui.food.controller.getFood">
+    <Wizard id="getFoodWizard" complete="makeOrderHandler" finishButtonText="{i18n>makeOrderButtonTitle}" renderMode="Page">
+        <WizardStep id="Authorization" 
+        title="{i18n>AuthorizeStepTitle}" 
+        validated="false" complete="authorizationHanlder" 
+        activate="completeAuthorization">
+            <FlexBox direction="Column" class="sapUiLargeMarginBegin sapUiLargeMarginBottom">
+                <FlexBox direction="Column">
+                    <Title text="ID" class="sapUiLargeMarginTop" />
+                    <Input id="id"
+                           valueState="{/idValueState}"
+                           width="50%"
+                           value="{/idValue}"
+                           liveChange="additionalInfoValidation" />
+                    <Title text="Password" class="sapUiLargeMarginTop" />
+                    <Input id="password"
+                           valueState="{/passwordValueState}"
+                           value="{/passwordValue}"
+                           width="50%"
+                           liveChange="additionalInfoValidation" />
+                    <FlexBox direction="Row" class="sapUiMediumMarginTop">
+                        <Button text="{i18n>AuthorizationButton}" press=".onAuthorization"/>
+                        <Button text="{i18n>InsertCardButton}" class="sapUiMediumMarginBegin" press=".onScanCard"/>
+
+                    </FlexBox>
+
+                </FlexBox>
+            </FlexBox>
+        </WizardStep>
+        <WizardStep id="foodSelection" title="{i18n>foodListTitle}" validated="false">
+            <f:GridList id="foodListGrid" items="{path:'food>/FoodSet' , parameters:{expand : 'FoodToTags'}}"
+            class="sapUiResponsiveContentPadding">
+                <f:customLayout>
+                    <grid:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 1fr))" gridGap="1rem" />
+                </f:customLayout>
+                <f:GridListItem>
+                    <HBox height="100%" class="sapUiSmallMargin" alignItems="Start">
+                        <Image src="foodImages/{food>ImageName}" width="3rem" class="sapUiSmallMarginEnd" />
+                        <VBox height="100%" alignItems="Start">
+                            <Title text="{food>Descr}" wrapping="true" />
+                            <Label text="Amount: {food>Amount}" wrapping="true" />
+                        </VBox>
+                        <VBox></VBox>
+                    </HBox>
+
+                </f:GridListItem>
+            </f:GridList>
+        </WizardStep>
+        <WizardStep ></WizardStep>
+    </Wizard>
+
+</mvc:View>
+
+
+<!-- <List headerText="{i18n>foodListTitle}" class="sapUiResponsiveMargin" width="auto" items="{path:'food>/FoodSet' , parameters:{expand : 'FoodToTags'}}">
+                            <items>
+                                <ObjectListItem title="{food>Descr}">
+                                </ObjectListItem>
+                            </items>
+                        </List> -->
+
+
+
