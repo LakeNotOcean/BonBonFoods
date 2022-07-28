@@ -6,7 +6,7 @@ sap.ui.define(
   ],
   function (UIComponent, JSONModel, ResourceModel) {
     "use strict";
-    return UIComponent.extend("sap.ui.demo.food.Component", {
+    return UIComponent.extend("sap.ui.food.Component", {
       metadata: {
         interfaces: ["sap.ui.core.IAsyncContentCreation"],
         manifest: "json",
@@ -15,8 +15,6 @@ sap.ui.define(
         // call the init function of the parent
         UIComponent.prototype.init.apply(this, arguments);
         // set data model
-        const oModel = new JSONModel(oData);
-        this.setModel(oModel);
         // set i18n model on view
         const i18nModel = new ResourceModel({
           bundleName: "sap.ui.food.i18n.i18n",

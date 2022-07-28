@@ -1,0 +1,18 @@
+html[dir="ltr"] .myAppDemoWT .myCustomButton.sapMBtn {
+    margin-right: 0.125rem
+ }
+ 
+ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
+    margin-left: 0.125rem
+ }
+ 
+ .myCustomText {
+    display: inline-block;
+    /* font-weight: bold; */
+    color:red !important;
+ }
+
+ .firstPanel .sapMPanelHdr{
+    color:lawngreen;
+ }
+

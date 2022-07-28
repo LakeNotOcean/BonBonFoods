@@ -2,15 +2,13 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
   ],
-  function (Controller, JSONModel, formatter, Filter, FilterOperator) {
+  function (Controller) {
     "use strict";
 
-    return Controller.extend("sap.ui.demo.walkthrough.controller.FoodList", {
-      formatter: formatter,
+    return Controller.extend("sap.ui.food.controller.FoodList", {
       onInit: function () {
         // var oViewModel = new JSONModel({
         //   currency: "EUR",

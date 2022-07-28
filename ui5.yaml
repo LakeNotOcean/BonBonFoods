@@ -1,6 +1,6 @@
 specVersion: "2.6"
 metadata:
-  name: sapui5walkthrough
+  name: bonbonfoods
 type: application
 
 server:
@@ -10,7 +10,7 @@ server:
       configuration:
         ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         backend:
-          - path: /sap/opu/odata/sap/ZSTUDENT02_DINING_SRV  
+          - path: /sap/opu/odata/sap/ZSTUDENT02_DINING_SRV
             url: https://s4hana.local.net:44300/
         ui5:
           path:
