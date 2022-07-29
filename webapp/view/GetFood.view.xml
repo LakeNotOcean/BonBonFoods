@@ -8,7 +8,7 @@
           xmlns:fb="sap.ui.comp.filterbar"
           xmlns:vm="sap.ui.comp.variants"
           xmlns:core="sap.ui.core"
-          controllerName="sap.ui.food.controller.getFood">
+          controllerName="sap.ui.food.controller.GetFood">
     <Wizard height="100%" id="getFoodWizard" complete="confirmOrderHandler" finishButtonText="{i18n>makeOrderButtonTitle}" renderMode="Page">
         <WizardStep id="authorization" 
         title="{i18n>AuthorizeStepTitle}" 
