@@ -2,7 +2,6 @@ specVersion: "2.6"
 metadata:
   name: bonbonfoods
 type: application
-
 server:
   customMiddleware:
     - name: fiori-tools-proxy

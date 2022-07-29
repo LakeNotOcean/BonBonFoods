@@ -6,10 +6,10 @@
           xmlns:f="sap.f"
           xmlns:grid="sap.ui.layout.cssgrid"
           controllerName="sap.ui.food.controller.getFood">
-    <Wizard id="getFoodWizard" complete="makeOrderHandler" finishButtonText="{i18n>makeOrderButtonTitle}" renderMode="Page">
-        <WizardStep id="Authorization" 
+    <Wizard id="getFoodWizard" complete="confirmOrderHandler" finishButtonText="{i18n>makeOrderButtonTitle}" renderMode="Page">
+        <WizardStep id="authorization" 
         title="{i18n>AuthorizeStepTitle}" 
-        validated="false" complete="authorizationHanlder" 
+        validated="false" complete="auhtorizationHandler" 
         activate="completeAuthorization">
             <FlexBox direction="Column" class="sapUiLargeMarginBegin sapUiLargeMarginBottom">
                 <FlexBox direction="Column">
@@ -34,26 +34,93 @@
                 </FlexBox>
             </FlexBox>
         </WizardStep>
-        <WizardStep id="foodSelection" title="{i18n>foodListTitle}" validated="false">
-            <f:GridList id="foodListGrid" items="{path:'food>/FoodSet' , parameters:{expand : 'FoodToTags'}}"
+        <WizardStep id="foodSelection" title="{i18n>foodListTitle}" validated="false" complete="orderHandler">
+            <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
+                <f:header>
+                    <f:DynamicPageHeader pinnable="true">
+                        <f:content>
+                            <fb:FilterBar id="filterbar"
+                                          reset="onReset"
+                                          search="onSearch"
+                                          useToolbar="false"
+                                          showGoOnFB="false">
+                                <fb:filterItems>
+                                    <fb:FilterItem name="A" label="Name">
+                                        <fb:control>
+                                            <Select
+										id="slName"
+										forceSelection="true"
+										change="onSelectChange"
+										items="{
+                                                    path: 'food>/CategorySet'
+                                                }">
+                                                <core:Item key="{key}" text="{name}" />
+                                            </Select>
+                                        </fb:control>				
+                                    </fb:FilterItem>								
+                                    <fb:FilterItem name="B" label="Category">
+                                        <fb:control>
+                                            <Select
+										id="slCategory"
+										change="onSelectChange"
+										forceSelection="true"
+										items="{
+                                                    path: 'food>/Tags'
+                                                 }">
+                                                <core:Item key="{key}" text="{name}" />
+                                            </Select>
+                                        </fb:control>				
+                                    </fb:FilterItem>				
+                                </fb:filterItems>
+                            </fb:FilterBar>
+                        </f:content>
+                    </f:DynamicPageHeader>
+                </f:header>
+                <f:content>
+                    <f:GridList id="foodListGrid" items="{path:'food>/FoodSet' , parameters:{expand : 'FoodToTags'}}"
+            class="sapUiResponsiveContentPadding">
+                        <f:customLayout>
+                            <grid:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 1fr))" gridGap="1rem" />
+                        </f:customLayout>
+                        <f:GridListItem>
+                            <HBox height="100%" width="100%" class="sapUiSmallMargin" justifyContent="SpaceBetween">
+                                <HBox justifyContent="Center">
+                                    <Image src="foodImages/{food>ImageName}" width="3rem" class="sapUiSmallMarginEnd" />
+                                    <VBox height="100%" alignItems="Start">
+                                        <Title text="{food>Descr}" wrapping="true" />
+                                        <Label text="Amount: {food>Amount}" wrapping="true" />
+                                    </VBox>
+                                </HBox>
+                                <HBox width="30%">
+                                    <Input width="20%" name="{parts:[{path:'food>Id'},{path:'food>Category'}], formatter: '.formatter.inputId'}" liveChange="additionalInfoValidation" change="addInputInfo"/>
+                                </HBox>
+                            </HBox>
+
+                        </f:GridListItem>
+                    </f:GridList>
+                </f:content>
+            </f:DynamicPage>
+        </WizardStep>
+        <WizardStep id="orderConfirmation" title="{i18n>orderConfirmation}" validated="true">
+            <f:GridList items="{path:'OrderDataModel>/food'}" growing="true"
             class="sapUiResponsiveContentPadding">
                 <f:customLayout>
                     <grid:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(16rem, 1fr))" gridGap="1rem" />
                 </f:customLayout>
                 <f:GridListItem>
-                    <HBox height="100%" class="sapUiSmallMargin" alignItems="Start">
-                        <Image src="foodImages/{food>ImageName}" width="3rem" class="sapUiSmallMarginEnd" />
-                        <VBox height="100%" alignItems="Start">
-                            <Title text="{food>Descr}" wrapping="true" />
-                            <Label text="Amount: {food>Amount}" wrapping="true" />
-                        </VBox>
-                        <VBox></VBox>
+                    <HBox height="100%" width="100%" class="sapUiSmallMargin" justifyContent="SpaceBetween">
+                        <HBox justifyContent="Center">
+                            <Image src="foodImages/{OrderDataModel>ImageName}" width="3rem" class="sapUiSmallMarginEnd" />
+                            <VBox height="100%" alignItems="Start">
+                                <Title text="{OrderDataModel>Descr}" wrapping="true" />
+                                <Label text="Amount: {OrderDataModel>Amount}" wrapping="true" />
+                            </VBox>
+                        </HBox>
                     </HBox>
 
                 </f:GridListItem>
             </f:GridList>
         </WizardStep>
-        <WizardStep ></WizardStep>
     </Wizard>
 
 </mvc:View>
@@ -68,3 +135,4 @@
 
 
 
+<!-- {path:'food>Id', formatter: '.formatter.inputId'} -->
