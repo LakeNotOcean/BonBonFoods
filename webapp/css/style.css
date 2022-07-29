@@ -16,3 +16,7 @@ html[dir="ltr"] .myAppDemoWT .myCustomButton.sapMBtn {
     color:lawngreen;
  }
 
+
+.foodSelectionClass{
+   height: 100vh;
+ }

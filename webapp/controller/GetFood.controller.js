@@ -2,11 +2,21 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
+    "sap/m/Label",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "../model/formatter",
+    "sap/m/MessageToast",
   ],
-  function (Controller, JSONModel, Filter, FilterOperator, formatter) {
+  function (
+    Controller,
+    JSONModel,
+    Label,
+    Filter,
+    FilterOperator,
+    formatter,
+    MessageToast
+  ) {
     "use strict";
     return Controller.extend("sap.ui.food.controller.getFood", {
       formatter: formatter,
@@ -23,11 +33,71 @@ sap.ui.define(
 
         this.getView().setModel(this.model);
         this.getView().setModel(null, "OrderDataModel");
+
+        this.model.setProperty("/Filter/text", "Filtered by None");
+
+        this.aKeys = ["Category", "Tag"];
+        this.oSelectCategory = this.byId("slCategory");
+        this.oSelectTag = this.byId("slTag");
+
+        const oFB = this.getView().byId("filterbar");
+        if (oFB) {
+          oFB.variantsInitialized();
+        }
+      },
+
+      onExit: function () {
+        this.aKeys = [];
+        this.aFilters = [];
+        this.oModel = null;
+      },
+
+      onSelectChange: function () {
+        var aCurrentFilterValues = [];
+
+        aCurrentFilterValues.push(
+          this.getSelectedItemText(this.oSelectCategory)
+        );
+        aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectTag));
+
+        this.filterItems(aCurrentFilterValues);
+      },
+
+      filterItems: function (aCurrentFilterValues) {
+        const oItems = this.getGridItems();
+        const aFilters = this.getFilters(aCurrentFilterValues);
+        oItems.filter(aFilters);
+      },
+
+      getFilters: function (aCurrentFilterValues) {
+        this.aFilters = [];
+
+        this.aFilters.push(
+          new Filter("Category", FilterOperator.EQ, aCurrentFilterValues[0])
+        );
+        // this.aFilters.push(
+        //   new Filter(
+        //     "FoodToTags/TagsId",
+        //     FilterOperator.EQ,
+        //     aCurrentFilterValues[1]
+        //   )
+        // );
+        return this.aFilters;
+      },
+
+      getGridItems: function () {
+        return this.getView().byId("foodListGrid").getBinding("items");
+      },
+
+      getSelectedItemText: function (oSelect) {
+        return oSelect.getSelectedItem()
+          ? oSelect.getSelectedItem().getKey()
+          : "";
       },
 
       errorsObjects: new Set(),
       successObjects: new Map(),
-      orderObjects: new Array(),
+      aOrderObjects: new Array(),
 
       additionalInfoValidation: function (oEvent) {
         const sInputName = oEvent.getSource().getName();
@@ -50,7 +120,7 @@ sap.ui.define(
           return;
         }
         if (nValue === 0) {
-          oInput.setValueState("");
+          oInput.setValueState("None");
           return;
         }
         oInput.setValueState("Success");
@@ -121,19 +191,54 @@ sap.ui.define(
             .getProperty(`/FoodSet(Id='${nId}',Category='${nCat}')`);
           oFood.Amount = nValue;
           delete oFood.FoodToTags;
-          this.orderObjects.push(oFood);
+          this.aOrderObjects.push(oFood);
         });
         this.createFinalStepView();
       },
 
       confirmOrderHandler: function () {
-        console.log("orderConfirmed");
+        this.aOrderObjects.forEach((el) => {
+          const oModel = this.getView("getFoodWizard").getModel("food");
+          const sKey = oModel.createKey("/FoodSet", {
+            Id: el.Id,
+            Category: el.Category,
+          });
+          oModel.update(sKey, {
+            Id: el.Id,
+            Category: el.Category,
+            Descr: el.Descr,
+            Amount: -el.Amount,
+          });
+        });
+        MessageToast.show("success");
+
+        this.returnToFood(this.getView("getFoodWizard"));
+      },
+
+      returnToFood: function (oView) {
+        this._wizard.discardProgress("foodListGrid", false);
+        this._wizard.previousStep();
+
+        oView.getModel("food").refresh();
+        oView.setModel(null, "OrderDataModel");
+
+        this.errorsObjects = new Set();
+        this.successObjects = new Map();
+        this.aOrderObjects = Array();
+
+        oView
+          .getControlsByFieldGroupId("foodInput")
+          .filter((c) => c.isA("sap.m.Input"))
+          .forEach((el) => {
+            el.setValueState("None");
+            el.setValue("");
+          });
       },
 
       createFinalStepView: function () {
         const oStep = this.getView().byId("orderConfirmation");
         const oOrderDataModel = { food: [] };
-        oOrderDataModel.food = this.orderObjects;
+        oOrderDataModel.food = this.aOrderObjects;
         oStep.setModel(new JSONModel(oOrderDataModel), "OrderDataModel");
         oStep.getModel("OrderDataModel").refresh();
 
