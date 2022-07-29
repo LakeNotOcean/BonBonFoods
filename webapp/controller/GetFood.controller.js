@@ -18,7 +18,7 @@ sap.ui.define(
     MessageToast
   ) {
     "use strict";
-    return Controller.extend("sap.ui.food.controller.getFood", {
+    return Controller.extend("sap.ui.food.controller.GetFood", {
       formatter: formatter,
       onInit: function () {
         this._wizard = this.byId("getFoodWizard");
