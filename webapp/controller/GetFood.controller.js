@@ -241,24 +241,6 @@ sap.ui.define(
         oOrderDataModel.food = this.aOrderObjects;
         oStep.setModel(new JSONModel(oOrderDataModel), "OrderDataModel");
         oStep.getModel("OrderDataModel").refresh();
-
-        // const oGridList = new sap.f.GridList({
-        //   items: { path: "OrderDataModel", template: oTemp },
-        // }).bindAggregation("GridListItem", {
-        //   template: new sap.m.ListItemBase({
-        //     content: new sap.m.HBox({
-        //       height: "100%",
-        //       width: "100%",
-        //       justifyContent: "SpaceBetween",
-        //       content: [
-        //         new sap.m.Image({
-        //           src: "foodImages/{OrderDataModel>ImageName}",
-        //           width: "3rem",
-        //         }),
-        //       ],
-        //     }),
-        //   }),
-        // });
       },
     });
   }
